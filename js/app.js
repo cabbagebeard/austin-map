@@ -5,10 +5,7 @@ function initMap() {
     minZoom: 4,
     center: austin
   });
-  infoWindow = new google.maps.InfoWindow();
-}
 
-function markers() {
   var vegMarker = new google.maps.Marker({
     icon: 'img/darkgreen_MarkerV.png',
     map: map
@@ -20,11 +17,8 @@ function markers() {
   var regMarker = new google.maps.Marker({
     map: map
   });
+
+  infoWindow = new google.maps.InfoWindow();
 }
 
 
-try {
-  initMap();
-} catch (err) {
-  // places.errorMessages.push("Failure loading Map");
-}
