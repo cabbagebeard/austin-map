@@ -33,17 +33,27 @@ function initMap() {
     var marker = new google.maps.Marker({
       position: place.position,
       icon: icons[place.type].icon,
+      name: place.name,
       map: map
     });
+    marker.addListener('click', function() {
+    infoWindow.open(map, marker);
+  });
+
+  var infoWindow = new google.maps.InfoWindow({
+    content: marker.name
+  });
   }
 
   var places = [
   {
     position: new google.maps.LatLng(30.269565, -97.736383),
+    name: "Arlo's",
     type: 'veg'
   },
   {
     position: new google.maps.LatLng(30.269693, -97.736297),
+    name: "Cheer Up Charlies",
     type: 'bar'
   },
   {
@@ -69,11 +79,15 @@ function initMap() {
     legend.appendChild(div);
   }
 
-  // FourSquare API 
-  
-  // client_id = USVBGCVLFISWBVO0F13GELJFCDCWBE0HJUQ3JPYTWYX2TMET
-  // client_secret = 50DVWPBMURC1SWNIJF5DMJ1K5FJITJFSAHG1KBFPQKJBCVRL
-  
-
   map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
+
+  // FourSquare API 
+
+  // https://api.foursquare.com/v2/venues/search
+  // ?client_id=USVBGCVLFISWBVO0F13GELJFCDCWBE0HJUQ3JPYTWYX2TMET
+  // &client_secret=50DVWPBMURC1SWNIJF5DMJ1K5FJITJFSAHG1KBFPQKJBCVRL
+  // &v=20130815
+  // &ll=40.7,-74
+  // &query=sushi
+      
 }
