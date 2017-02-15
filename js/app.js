@@ -58,10 +58,12 @@ function initMap() {
   },
   {
     position: new google.maps.LatLng(30.683100, -98.344213),
+    name: "Longhorn Cavern State Park",
     type: 'activity'
   },
   {
     position: new google.maps.LatLng(30.320741, -97.773344),
+    name: "Mount Bonnell",
     type: 'activity'
   }];
 
