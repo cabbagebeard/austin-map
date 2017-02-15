@@ -70,4 +70,6 @@ function initMap() {
   map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 }
 
-
+var myViewModel = {
+  personName: 'Kevin'
+};
