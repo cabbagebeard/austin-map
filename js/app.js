@@ -1,3 +1,5 @@
+var self = this;
+
 var map;
 function initMap() {
   var austin = {lat: 30.266568, lng: -97.743202};
@@ -66,6 +68,12 @@ function initMap() {
     div.innerHTML = '<img src="' + icon + '">' + name;
     legend.appendChild(div);
   }
+
+  // FourSquare API 
+  
+  // client_id = USVBGCVLFISWBVO0F13GELJFCDCWBE0HJUQ3JPYTWYX2TMET
+  // client_secret = 50DVWPBMURC1SWNIJF5DMJ1K5FJITJFSAHG1KBFPQKJBCVRL
+  
 
   map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 }
