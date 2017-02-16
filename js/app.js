@@ -1,5 +1,3 @@
-var self = this;
-
 var map;
 function initMap() {
   var austin = {lat: 30.266568, lng: -97.743202};
@@ -31,7 +29,7 @@ function initMap() {
 
   function addMarker(place) {
     var marker = new google.maps.Marker({
-      position: place.position,
+      position: new google.maps.LatLng(place.lat, place.lng),
       icon: icons[place.type].icon,
       name: place.name,
       map: map
@@ -47,22 +45,26 @@ function initMap() {
 
   var places = [
   {
-    position: new google.maps.LatLng(30.269565, -97.736383),
+    lat: 30.269565, 
+    lng: -97.736383,
     name: "Arlo's",
     type: 'veg'
   },
   {
-    position: new google.maps.LatLng(30.269693, -97.736297),
+    lat: 30.269693, 
+    lng: -97.736297,
     name: "Cheer Up Charlies",
     type: 'bar'
   },
   {
-    position: new google.maps.LatLng(30.683100, -98.344213),
+    lat: 30.683100, 
+    lng: -98.344213,
     name: "Longhorn Cavern State Park",
     type: 'activity'
   },
   {
-    position: new google.maps.LatLng(30.320741, -97.773344),
+    lat: 30.320741, 
+    lng: -97.773344,
     name: "Mount Bonnell",
     type: 'activity'
   }];
@@ -82,6 +84,11 @@ function initMap() {
   }
 
   map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
+
+  function ViewModel() {
+  	var self = this
+  	self.places = ko.observableArray(places)
+  }
 
   // FourSquare API 
 
