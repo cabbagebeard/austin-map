@@ -1,4 +1,33 @@
+var places = [
+	{
+		lat: 30.269565, 
+		lng: -97.736383,
+		"name": "Arlo's",
+		type: 'veg'
+	},
+	{
+		lat: 30.269693, 
+		lng: -97.736297,
+		name: "Cheer Up Charlies",
+		type: 'bar'
+	},
+	{
+		lat: 30.683100, 
+		lng: -98.344213,
+		name: "Longhorn Cavern State Park",
+		type: 'activity'
+	},
+	{
+		lat: 30.320741, 
+		lng: -97.773344,
+		name: "Mount Bonnell",
+		type: 'activity'
+	}
+];
+
 var map;
+var allPlaces = [];
+
 function initMap() {
   var austin = {lat: 30.266568, lng: -97.743202};
   map = new google.maps.Map(document.getElementById('map'), {
@@ -43,32 +72,6 @@ function initMap() {
   });
   }
 
-  var places = [
-  {
-    lat: 30.269565, 
-    lng: -97.736383,
-    name: "Arlo's",
-    type: 'veg'
-  },
-  {
-    lat: 30.269693, 
-    lng: -97.736297,
-    name: "Cheer Up Charlies",
-    type: 'bar'
-  },
-  {
-    lat: 30.683100, 
-    lng: -98.344213,
-    name: "Longhorn Cavern State Park",
-    type: 'activity'
-  },
-  {
-    lat: 30.320741, 
-    lng: -97.773344,
-    name: "Mount Bonnell",
-    type: 'activity'
-  }];
-
   for (var i = 0, place; place = places[i]; i++) {
     addMarker(place);
   }
@@ -84,12 +87,7 @@ function initMap() {
   }
 
   map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
-
-  function ViewModel() {
-  	var self = this
-  	self.places = ko.observableArray(places)
-  }
-
+}
   // FourSquare API 
 
   // https://api.foursquare.com/v2/venues/search
@@ -99,4 +97,18 @@ function initMap() {
   // &ll=40.7,-74
   // &query=sushi
       
+
+function ViewModel() {
+  	var self = this;
+  	self.allPlaces = ko.observableArray([]);
+
+  	for (var i = 0, place; place = places[i]; i++) {
+  		self.lat = place.lat;
+  		self.lng = place.lng;
+  		self.name = place.name;
+  		self.type = place.type;
+  		allPlaces.push(self);
+  	}
 }
+
+ko.applyBindings(new ViewModel());
