@@ -2,7 +2,7 @@ var places = [
 	{
 		lat: 30.269565, 
 		lng: -97.736383,
-		"name": "Arlo's",
+		name: "Arlo's",
 		type: 'veg'
 	},
 	{
@@ -26,7 +26,6 @@ var places = [
 ];
 
 var map;
-var allPlaces = [];
 
 function initMap() {
   var austin = {lat: 30.266568, lng: -97.743202};
@@ -96,19 +95,27 @@ function initMap() {
   // &v=20130815
   // &ll=40.7,-74
   // &query=sushi
-      
+  
+var Place = function(data) {
+	this.lat = ko.observable(data.lat);
+	this.lng = ko.observable(data.lng);
+	this.name = ko.observable(data.name);
+	this.type = ko.observable(data.type);
+} 
 
 function ViewModel() {
-  	var self = this;
-  	self.allPlaces = ko.observableArray([]);
+	var self = this;
 
-  	for (var i = 0, place; place = places[i]; i++) {
-  		self.lat = place.lat;
-  		self.lng = place.lng;
-  		self.name = place.name;
-  		self.type = place.type;
-  		allPlaces.push(self);
-  	}
+	this.placesList = ko.observableArray([]);
+
+	places.forEach(function(placeItem) {
+		self.placesList.push( new Place(placeItem) );
+	});
+
+	this.currentPlace = ko.observable( this.placesList()[0] );
+
 }
 
 ko.applyBindings(new ViewModel());
+
+
