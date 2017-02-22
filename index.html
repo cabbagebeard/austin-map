@@ -1,6 +1,10 @@
 <!DOCTYPE html> 
+
 <head>
+<title>Austin Map</title>
+
 <link rel="stylesheet" type="text/css" href="css/styles.css">
+<link href="https://fonts.googleapis.com/css?family=Raleway:500,800" rel="stylesheet">
 </head>
 
 <body>
@@ -9,9 +13,12 @@
 
 <div id="legend"><h3>Legend</h3></div>
 
-<ul data-bind="foreach: placesList">
-	<li data-bind="text: name"></li>
-</ul>
+<div id="placesList">
+	<input id="search-bar" placeholder="Search...">
+	<ul data-bind="foreach: placesList">
+		<li data-bind="text: name"></li>
+	</ul>
+</div>
 
 	
  <script async defer
