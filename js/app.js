@@ -87,20 +87,31 @@ function initMap() {
 
   map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 }
-  // FourSquare API 
 
-  // https://api.foursquare.com/v2/venues/search
-  // ?client_id=USVBGCVLFISWBVO0F13GELJFCDCWBE0HJUQ3JPYTWYX2TMET
-  // &client_secret=50DVWPBMURC1SWNIJF5DMJ1K5FJITJFSAHG1KBFPQKJBCVRL
-  // &v=20130815
-  // &ll=40.7,-74
-  // &query=sushi
-  
 var Place = function(data) {
 	this.lat = ko.observable(data.lat);
 	this.lng = ko.observable(data.lng);
 	this.name = ko.observable(data.name);
 	this.type = ko.observable(data.type);
+
+	var shortLat = data.lat.toFixed(2);
+	var shortLng = data.lng.toFixed(2);
+
+	var FourSquareURL = "https://api.foursquare.com/v2/venues/search" + 
+  	"?client_id=USVBGCVLFISWBVO0F13GELJFCDCWBE0HJUQ3JPYTWYX2TMET" +
+  	"&client_secret=50DVWPBMURC1SWNIJF5DMJ1K5FJITJFSAHG1KBFPQKJBCVRL" +
+  	"&v=20130815" + 
+ 	"&ll="+ shortLat + "," + shortLng +
+  	"&query=" + data.name;
+
+
+  	$.getJSON(FourSquareURL, function(data) {
+  		if (data.response.venues) {
+  			var place = data.response.venues[0];
+  			this.address = ko.observable(place.location.address);
+  			console.log(place.location.address);
+  		}
+  	})
 } 
 
 function ViewModel() {
