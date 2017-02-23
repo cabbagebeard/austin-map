@@ -77,10 +77,18 @@ function initMap() {
 			icon: icons[place.type].icon,
 			name: place.name,
 			address: currentAddress,
+			infoOpen: false,
 			map: map
 		});
 		marker.addListener('click', function() {
-			infoWindow.open(map, marker);
+			if (marker.infoOpen == false) {
+				infoWindow.open(map, marker);
+				marker.infoOpen = true;
+			}
+			else if (marker.infoOpen) {
+				infoWindow.close(map, marker);
+				marker.infoOpen = false;
+			}
 		});
 
 		var infoWindow = new google.maps.InfoWindow({
