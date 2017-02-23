@@ -56,19 +56,37 @@ function initMap() {
   };
 
   function addMarker(place) {
-    var marker = new google.maps.Marker({
-      position: new google.maps.LatLng(place.lat, place.lng),
-      icon: icons[place.type].icon,
-      name: place.name,
-      map: map
-    });
-    marker.addListener('click', function() {
-    infoWindow.open(map, marker);
-  });
 
-  var infoWindow = new google.maps.InfoWindow({
-    content: marker.name
-  });
+  	var shortLat = place.lat.toFixed(2);
+	var shortLng = place.lng.toFixed(2);
+
+	var FourSquareURL = "https://api.foursquare.com/v2/venues/search" + 
+  	"?client_id=USVBGCVLFISWBVO0F13GELJFCDCWBE0HJUQ3JPYTWYX2TMET" +
+  	"&client_secret=50DVWPBMURC1SWNIJF5DMJ1K5FJITJFSAHG1KBFPQKJBCVRL" +
+  	"&v=20130815" + 
+ 	"&ll="+ shortLat + "," + shortLng +
+  	"&query=" + place.name;
+
+	$.getJSON(FourSquareURL, function(FourSquareData) {
+  		if (FourSquareData.response.venues) {
+  			var currentPlace = FourSquareData.response.venues[0];
+  			var currentAddress = currentPlace.location.address;	
+  		}	
+		var marker = new google.maps.Marker({	
+			position: new google.maps.LatLng(place.lat, place.lng),
+			icon: icons[place.type].icon,
+			name: place.name,
+			address: currentAddress,
+			map: map
+		});
+		marker.addListener('click', function() {
+			infoWindow.open(map, marker);
+		});
+
+		var infoWindow = new google.maps.InfoWindow({
+			content: marker.name + "<br>" + marker.address
+		});
+  	})
   }
 
   for (var i = 0, place; place = places[i]; i++) {
@@ -89,29 +107,11 @@ function initMap() {
 }
 
 var Place = function(data) {
+
 	this.lat = ko.observable(data.lat);
 	this.lng = ko.observable(data.lng);
 	this.name = ko.observable(data.name);
 	this.type = ko.observable(data.type);
-
-	var shortLat = data.lat.toFixed(2);
-	var shortLng = data.lng.toFixed(2);
-
-	var FourSquareURL = "https://api.foursquare.com/v2/venues/search" + 
-  	"?client_id=USVBGCVLFISWBVO0F13GELJFCDCWBE0HJUQ3JPYTWYX2TMET" +
-  	"&client_secret=50DVWPBMURC1SWNIJF5DMJ1K5FJITJFSAHG1KBFPQKJBCVRL" +
-  	"&v=20130815" + 
- 	"&ll="+ shortLat + "," + shortLng +
-  	"&query=" + data.name;
-
-
-  	$.getJSON(FourSquareURL, function(data) {
-  		if (data.response.venues) {
-  			var place = data.response.venues[0];
-  			this.address = ko.observable(place.location.address);
-  			console.log(place.location.address);
-  		}
-  	})
 } 
 
 function ViewModel() {
