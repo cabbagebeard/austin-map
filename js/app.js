@@ -22,7 +22,31 @@ var places = [
 		lng: -97.773344,
 		name: "Mount Bonnell",
 		type: 'activity'
-	}
+	},
+	{
+		lat: 30.218634, 
+		lng: -97.771560,
+		name: "Cathedral of Junk",
+		type: 'activity'
+	},
+	{
+		lat: 30.266919, 
+		lng: -97.745178,
+		name: "Peche",
+		type: 'bar'
+	},
+	{
+		lat: 30.265028, 
+		lng: -97.731564,
+		name: "Baton Creole",
+		type: 'veg'
+	},
+	{
+		lat: 30.181238, 
+		lng: -97.722692,
+		name: "McKinney State Park",
+		type: 'campsite'
+	},
 ];
 
 var map;
