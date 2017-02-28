@@ -102,6 +102,7 @@ function initMap() {
 			name: place.name,
 			address: currentAddress,
 			infoOpen: false,
+			animation: google.maps.Animation.DROP,
 			map: map
 		});
 		marker.addListener('click', function() {
@@ -156,8 +157,11 @@ function ViewModel() {
 	});
 
 	this.currentPlace = ko.observable( this.placesList()[0] );
-
 }
+
+
+
+
 
 ko.applyBindings(new ViewModel());
 
