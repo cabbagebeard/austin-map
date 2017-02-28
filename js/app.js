@@ -53,12 +53,14 @@ var map;
 
 function initMap() {
   var austin = {lat: 30.266568, lng: -97.743202};
+  /// Sets map at Austin as the center
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 10,
     minZoom: 4,
     center: austin
   });
 
+  /// Custom markers
   var iconFolder = 'img/markers/';
   var icons = {
     veg: {
@@ -80,7 +82,7 @@ function initMap() {
   };
 
   function addMarker(place) {
-
+  	/// FourSquare API only excepts lat and lng in the form of XX.XX
   	var shortLat = place.lat.toFixed(2);
 	var shortLng = place.lng.toFixed(2);
 
@@ -91,6 +93,7 @@ function initMap() {
  	"&ll="+ shortLat + "," + shortLng +
   	"&query=" + place.name;
 
+  	/// Data Retrieval from FourSquare
 	$.getJSON(FourSquareURL, function(FourSquareData) {
   		if (FourSquareData.response.venues) {
   			var currentPlace = FourSquareData.response.venues[0];
@@ -133,14 +136,13 @@ function initMap() {
 		});
   	})
   }
-
+  	/// Adds the markers
 	for (var i = 0, place; place = places[i]; i++) {
 		addMarker(place);
 	}
 
 	/// Creating the Legend
 	var legend = document.getElementById('legend');
-
 	for (var key in icons) {
 		var type = icons[key];
 		var name = type.name;
@@ -149,7 +151,6 @@ function initMap() {
 		div.innerHTML = '<img src="' + icon + '">' + name;
 		legend.appendChild(div);
 	}
-
 	map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 	}
 
@@ -172,10 +173,6 @@ function ViewModel() {
 
 	this.currentPlace = ko.observable( this.placesList()[0] );
 }
-
-
-
-
 
 ko.applyBindings(new ViewModel());
 
