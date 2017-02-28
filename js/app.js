@@ -105,10 +105,22 @@ function initMap() {
 			animation: google.maps.Animation.DROP,
 			map: map
 		});
+
+		/// Marker Bounce
+		marker.addListener('click', function() {
+			if (marker.getAnimation() !== null) {
+    			marker.setAnimation(null);
+  			} else {
+    			marker.setAnimation(google.maps.Animation.BOUNCE);
+  			}
+		})
+
+		/// Marker Info Window
 		marker.addListener('click', function() {
 			if (marker.infoOpen == false) {
 				infoWindow.open(map, marker);
 				marker.infoOpen = true;
+
 			}
 			else if (marker.infoOpen) {
 				infoWindow.close(map, marker);
@@ -122,22 +134,24 @@ function initMap() {
   	})
   }
 
-  for (var i = 0, place; place = places[i]; i++) {
-    addMarker(place);
-  }
+	for (var i = 0, place; place = places[i]; i++) {
+		addMarker(place);
+	}
 
-  var legend = document.getElementById('legend');
-  for (var key in icons) {
-    var type = icons[key];
-    var name = type.name;
-    var icon = type.icon;
-    var div = document.createElement('div');
-    div.innerHTML = '<img src="' + icon + '">' + name;
-    legend.appendChild(div);
-  }
+	/// Creating the Legend
+	var legend = document.getElementById('legend');
 
-  map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
-}
+	for (var key in icons) {
+		var type = icons[key];
+		var name = type.name;
+		var icon = type.icon;
+		var div = document.createElement('div');
+		div.innerHTML = '<img src="' + icon + '">' + name;
+		legend.appendChild(div);
+	}
+
+	map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
+	}
 
 var Place = function(data) {
 
