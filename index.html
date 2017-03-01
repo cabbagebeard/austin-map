@@ -16,7 +16,7 @@
 <div id="placesList">
 	<input id="search-bar" placeholder="Search...">
 	<ul data-bind="foreach: placesList">
-		<li data-bind="text: name"></li>
+		<li data-bind="text: name, click: clickPlace"></li>
 	</ul>
 </div>
 

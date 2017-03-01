@@ -166,6 +166,10 @@ function initMap() {
 	map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 	}
 
+function clickPlace(data, map) {
+	console.log("hello");
+}
+
 var Place = function(data) {
 
 	this.lat = ko.observable(data.lat);
