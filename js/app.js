@@ -47,6 +47,24 @@ var places = [
 		name: "McKinney State Park",
 		type: 'campsite'
 	},
+	{
+		lat: 30.3698655, 
+		lng: -97.7226937,
+		name: "Pinballz Arcade",
+		type: 'activity'
+	},
+	{
+		lat: 30.2484381, 
+		lng: -97.7525195,
+		name: "Uncommon Objects",
+		type: 'activity'
+	},
+	{
+		lat: 30.2626767, 
+		lng: -97.7165872,
+		name: "BBQ Revolution",
+		type: 'veg'
+	},
 ];
 
 var map;
