@@ -61,7 +61,7 @@ var places = [
 	},
 ];
 
-var map;
+var map, marker;
 
 function initMap() {
   var austin = {lat: 30.266568, lng: -97.743202};
@@ -130,12 +130,13 @@ function initMap() {
   			}
 		})
 
-		/// Marker Info Window
+		/// Zooms, centers, and opens Info Window on clicked marker
 		marker.addListener('click', function() {
+			map.setZoom(12);
+			map.setCenter(marker.position);
 			if (marker.infoOpen == false) {
 				infoWindow.open(map, marker);
 				marker.infoOpen = true;
-
 			}
 			else if (marker.infoOpen) {
 				infoWindow.close(map, marker);
@@ -166,16 +167,11 @@ function initMap() {
 	map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 	}
 
-function clickPlace(data, map) {
-	console.log("hello");
-}
-
 var Place = function(data) {
-
 	this.lat = ko.observable(data.lat);
 	this.lng = ko.observable(data.lng);
 	this.name = ko.observable(data.name);
-	this.type = ko.observable(data.type);
+	this.type = ko.observable(data.type);	
 } 
 
 function ViewModel() {
