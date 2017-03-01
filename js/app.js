@@ -127,11 +127,14 @@ function initMap() {
     			marker.setAnimation(null);
   			} else {
     			marker.setAnimation(google.maps.Animation.BOUNCE);
+    			    setTimeout(function() {
+				      marker.setAnimation(null);
+				    }, 2200);
   			}
 		})
 
 		/// Zooms, centers, and opens Info Window on clicked marker
-		marker.addListener('click', function() {
+		var clickPlace = marker.addListener('click', function() {
 			map.setZoom(12);
 			map.setCenter(marker.position);
 			if (marker.infoOpen == false) {
