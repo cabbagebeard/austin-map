@@ -185,11 +185,14 @@ function ViewModel() {
 		self.placesList.push( new Place(placeItem) );
 	});
 
+	/// Returns places that match user's input in search bar
 	self.filteredPlaces = ko.computed(function() {
-		return ko.utils.arrayFilter(self.placesList(), function(place){
-			return place;
-		})
-	})   
+        return ko.utils.arrayFilter(self.placesList(), function(place) {
+        	if (place.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
+        		return place.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1;
+        	}
+        });
+      }, self);
 }
 
 ko.applyBindings(new ViewModel());
