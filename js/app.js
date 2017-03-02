@@ -166,7 +166,13 @@ function initMap() {
 		legend.appendChild(div);
 	}
 	map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
-	}
+}
+
+function clickedPlace(place) {
+	var latLng = new google.maps.LatLng(place.lat(), place.lng())
+	map.setZoom(16);
+	map.setCenter(latLng);
+}
 
 var Place = function(data) {
 	this.lat = ko.observable(data.lat);
@@ -174,12 +180,6 @@ var Place = function(data) {
 	this.name = ko.observable(data.name);
 	this.type = ko.observable(data.type);	
 } 
-
-function clickedPlace(place) {
-	var latLng = new google.maps.LatLng(place.lat(), place.lng())
-	map.setZoom(16);
-	map.setCenter(latLng);
-}
 
 function ViewModel() {
 	var self = this;
