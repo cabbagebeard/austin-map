@@ -3,7 +3,7 @@ var places = [
 		lat: 30.269565, 
 		lng: -97.736383,
 		name: "Arlo's",
-		type: 'veg'
+		type: 'veg',
 	},
 	{
 		lat: 30.269693, 
@@ -61,7 +61,7 @@ var places = [
 	},
 ];
 
-var map, marker;
+var map;
 
 function initMap() {
   var austin = {lat: 30.266568, lng: -97.743202};
@@ -72,7 +72,7 @@ function initMap() {
     center: austin
   });
 
-  /// Custom markers
+  /// Custom marker icons
   var iconFolder = 'img/markers/';
   var icons = {
     veg: {
@@ -132,9 +132,8 @@ function initMap() {
 				    }, 700);
   			}
 		})
-
 		/// Zooms, centers, and opens Info Window on clicked marker
-		var clickPlace = marker.addListener('click', function() {
+		var centerMarker = marker.addListener('click', function() {		
 			map.setZoom(12);
 			map.setCenter(marker.position);
 			if (marker.infoOpen == false) {
@@ -142,22 +141,21 @@ function initMap() {
 				marker.infoOpen = true;
 			}
 			else if (marker.infoOpen) {
-				infoWindow.close(map, marker);
+				infoWindow.close();
 				marker.infoOpen = false;
-			}
+			}			
 		});
-
 		var infoWindow = new google.maps.InfoWindow({
 			content: marker.name + "<br>" + marker.address
 		});
   	})
   }
+
   	/// Adds the markers
 	for (var i = 0, place; place = places[i]; i++) {
 		addMarker(place);
 	}
-
-	/// Creating the Legend
+	/// Creates the Legend
 	var legend = document.getElementById('legend');
 	for (var key in icons) {
 		var type = icons[key];
@@ -180,15 +178,18 @@ var Place = function(data) {
 function ViewModel() {
 	var self = this;
 
-	this.placesList = ko.observableArray([]);
+	self.placesList = ko.observableArray([]);
+	self.filter = ko.observable('');
 
 	places.forEach(function(placeItem) {
 		self.placesList.push( new Place(placeItem) );
 	});
 
-	this.currentPlace = ko.observable( this.placesList()[0] );
+	self.filteredPlaces = ko.computed(function() {
+		return ko.utils.arrayFilter(self.placesList(), function(place){
+			return place;
+		})
+	})   
 }
 
 ko.applyBindings(new ViewModel());
-
-
