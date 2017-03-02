@@ -134,7 +134,7 @@ function initMap() {
 		})
 		/// Zooms, centers, and opens Info Window on clicked marker
 		var centerMarker = marker.addListener('click', function() {		
-			map.setZoom(12);
+			map.setZoom(16);
 			map.setCenter(marker.position);
 			if (marker.infoOpen == false) {
 				infoWindow.open(map, marker);
