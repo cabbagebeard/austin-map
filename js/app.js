@@ -175,6 +175,12 @@ var Place = function(data) {
 	this.type = ko.observable(data.type);	
 } 
 
+function clickedPlace(place) {
+	var latLng = new google.maps.LatLng(place.lat(), place.lng())
+	map.setZoom(16);
+	map.setCenter(latLng);
+}
+
 function ViewModel() {
 	var self = this;
 
