@@ -93,19 +93,19 @@ function initMap() {
     }
   };
 
-  function addMarker(place) {
-  	/// FourSquare API only excepts lat and lng in the form of XX.XX
-  	var shortLat = place.lat.toFixed(2);
+function addMarker(place) {
+	/// FourSquare API only excepts lat and lng in the form of XX.XX
+  var shortLat = place.lat.toFixed(2);
 	var shortLng = place.lng.toFixed(2);
 
 	var FourSquareURL = "https://api.foursquare.com/v2/venues/search" + 
-  	"?client_id=USVBGCVLFISWBVO0F13GELJFCDCWBE0HJUQ3JPYTWYX2TMET" +
-  	"&client_secret=50DVWPBMURC1SWNIJF5DMJ1K5FJITJFSAHG1KBFPQKJBCVRL" +
-  	"&v=20130815" + 
- 	"&ll="+ shortLat + "," + shortLng +
-  	"&query=" + place.name;
+		"?client_id=USVBGCVLFISWBVO0F13GELJFCDCWBE0HJUQ3JPYTWYX2TMET" +
+		"&client_secret=50DVWPBMURC1SWNIJF5DMJ1K5FJITJFSAHG1KBFPQKJBCVRL" +
+		"&v=20130815" + 
+		"&ll="+ shortLat + "," + shortLng +
+		"&query=" + place.name;
 
-  	/// Data Retrieval from FourSquare
+	/// Data Retrieval from FourSquare
 	$.getJSON(FourSquareURL, function(FourSquareData) {
   		if (FourSquareData.response.venues) {
   			var currentPlace = FourSquareData.response.venues[0];
@@ -131,12 +131,12 @@ function initMap() {
 				      marker.setAnimation(null);
 				    }, 700);
   			}
-		})
+		});
 		/// Zooms, centers, and opens Info Window on clicked marker
 		var centerMarker = marker.addListener('click', function() {		
 			map.setZoom(16);
 			map.setCenter(marker.position);
-			if (marker.infoOpen == false) {
+			if (marker.infoOpen === false) {
 				infoWindow.open(map, marker);
 				marker.infoOpen = true;
 			}
@@ -148,7 +148,7 @@ function initMap() {
 		var infoWindow = new google.maps.InfoWindow({
 			content: marker.name + "<br>" + marker.address
 		});
-  	})
+  	});
   }
 
   	/// Adds the markers
@@ -169,7 +169,7 @@ function initMap() {
 }
 
 function clickedPlace(place) {
-	var latLng = new google.maps.LatLng(place.lat(), place.lng())
+	var latLng = new google.maps.LatLng(place.lat(), place.lng());
 	map.setZoom(16);
 	map.setCenter(latLng);
 }
@@ -179,7 +179,7 @@ var Place = function(data) {
 	this.lng = ko.observable(data.lng);
 	this.name = ko.observable(data.name);
 	this.type = ko.observable(data.type);	
-} 
+};
 
 function ViewModel() {
 	var self = this;
