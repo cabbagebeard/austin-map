@@ -62,6 +62,7 @@ var places = [
 ];
 
 var map;
+var markers = [];
 
 function mapError() {
 	alert("Something went wrong. Please try again.");
@@ -75,8 +76,6 @@ function initMap() {
     minZoom: 4,
     center: austin
   });
-
-
 
   /// Custom marker icons
   var iconFolder = 'img/markers/';
@@ -125,9 +124,9 @@ function addMarker(place) {
 			icon: icons[place.type].icon,
 			name: place.name,
 			address: currentAddress,
-			infoOpen: false,
 			animation: google.maps.Animation.DROP,
-			map: map
+			map: map,
+			content: place.name + "<br>" + currentAddress			
 		});
 
 		/// Marker Bounce
@@ -141,24 +140,13 @@ function addMarker(place) {
 				    }, 700);
   			}
 		});
-		
-		/// Zooms, centers, and opens Info Window on clicked marker
-/*		var centerMarker = marker.addListener('click', function() {		
-			map.setZoom(16);
-			map.setCenter(marker.position);
-			if (marker.infoOpen === false) {
-				infoWindow.open(map, marker);
-				marker.infoOpen = true;
-			}
-			else if (marker.infoOpen) {
-				infoWindow.close();
-				marker.infoOpen = false;
-			}			
-		});
-		var infoWindow = new google.maps.InfoWindow({
-			content: marker.name + "<br>" + marker.address
-		});*/
 
+		/// creates infowindows for each marker and pushes markers to array
+		var infoWindow = new google.maps.InfoWindow({
+			content: marker.content
+		});
+		marker.infowindow = infoWindow;
+		markers.push(marker);
   	});
   }
 
@@ -189,7 +177,7 @@ var Place = function(data) {
 	this.lat = ko.observable(data.lat);
 	this.lng = ko.observable(data.lng);
 	this.name = ko.observable(data.name);
-	this.type = ko.observable(data.type);	
+	this.type = ko.observable(data.type);
 };
 
 function ViewModel() {
@@ -200,16 +188,18 @@ function ViewModel() {
 
 	places.forEach(function(placeItem) {
 		self.placesList.push( new Place(placeItem) );
+		console.log(placeItem.marker);
 	});
 
 	/// Returns places that match user's input in search bar
 	self.filteredPlaces = ko.computed(function() {
-        return ko.utils.arrayFilter(self.placesList(), function(place) {
-        	if (place.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
-        		return place.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1;
-        	}
-        });
-      }, self);
+    return ko.utils.arrayFilter(self.placesList(), function(place) {
+    	if (place.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
+    		return place.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1;
+    	}
+    });
+  }, self);
 }
 
 ko.applyBindings(new ViewModel());
+console.log(markers);
