@@ -63,6 +63,10 @@ var places = [
 
 var map;
 
+function mapError() {
+	alert("Something went wrong. Please try again.");
+	return;
+}
 function initMap() {
   var austin = {lat: 30.266568, lng: -97.743202};
   /// Sets map at Austin as the center
@@ -71,6 +75,8 @@ function initMap() {
     minZoom: 4,
     center: austin
   });
+
+
 
   /// Custom marker icons
   var iconFolder = 'img/markers/';
@@ -110,7 +116,10 @@ function addMarker(place) {
   		if (FourSquareData.response.venues) {
   			var currentPlace = FourSquareData.response.venues[0];
   			var currentAddress = currentPlace.location.address;	
-  		}	
+  		}	else {
+  			alert("There was an error retrieving data from FourSquare, please try again.");
+  			return;
+			}
 		var marker = new google.maps.Marker({	
 			position: new google.maps.LatLng(place.lat, place.lng),
 			icon: icons[place.type].icon,
@@ -132,8 +141,9 @@ function addMarker(place) {
 				    }, 700);
   			}
 		});
+		
 		/// Zooms, centers, and opens Info Window on clicked marker
-		var centerMarker = marker.addListener('click', function() {		
+/*		var centerMarker = marker.addListener('click', function() {		
 			map.setZoom(16);
 			map.setCenter(marker.position);
 			if (marker.infoOpen === false) {
@@ -147,11 +157,12 @@ function addMarker(place) {
 		});
 		var infoWindow = new google.maps.InfoWindow({
 			content: marker.name + "<br>" + marker.address
-		});
+		});*/
+
   	});
   }
 
-  	/// Adds the markers
+  /// Adds the markers
 	for (var i = 0, place; place = places[i]; i++) {
 		addMarker(place);
 	}
