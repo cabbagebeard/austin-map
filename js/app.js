@@ -129,6 +129,18 @@ function addMarker(place) {
 			content: place.name + "<br>" + currentAddress			
 		});
 
+		/// creates infowindows for each marker and pushes markers to array
+		var infoWindow = new google.maps.InfoWindow({
+			content: marker.content
+		});
+		marker.infoWindow = infoWindow;
+		markers.push(marker);
+
+		/// Opens infowindow on click
+		marker.addListener('click', function() {
+			infoWindow.open(map, marker);
+		})
+
 		/// Marker Bounce
 		marker.addListener('click', function() {
 			if (marker.getAnimation() !== null) {
@@ -139,16 +151,9 @@ function addMarker(place) {
 				      marker.setAnimation(null);
 				    }, 700);
   			}
-		});
-
-		/// creates infowindows for each marker and pushes markers to array
-		var infoWindow = new google.maps.InfoWindow({
-			content: marker.content
-		});
-		marker.infowindow = infoWindow;
-		markers.push(marker);
-  	});
-  }
+		});		
+  });
+ }
 
   /// Adds the markers
 	for (var i = 0, place; place = places[i]; i++) {
@@ -188,7 +193,6 @@ function ViewModel() {
 
 	places.forEach(function(placeItem) {
 		self.placesList.push( new Place(placeItem) );
-		console.log(placeItem.marker);
 	});
 
 	/// Returns places that match user's input in search bar
@@ -202,4 +206,3 @@ function ViewModel() {
 }
 
 ko.applyBindings(new ViewModel());
-console.log(markers);
