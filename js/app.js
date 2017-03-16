@@ -62,12 +62,13 @@ var places = [
 ];
 
 var map;
-var markers = [{}];
+var markers = [];
 
 function mapError() {
 	alert("Something went wrong. Please try again.");
 	return;
 }
+
 function initMap() {
   var austin = {lat: 30.266568, lng: -97.743202};
   /// Sets map at Austin as the center
@@ -97,7 +98,6 @@ function initMap() {
       icon: iconFolder + 'brown_MarkerC.png'
     }
   };
-
 /// Global infowindow variable makes it so only one is open at a time 
 var infowindow = new google.maps.InfoWindow();
 
@@ -130,15 +130,10 @@ function addMarker(place) {
 			address: currentAddress,
 			animation: google.maps.Animation.DROP,
 			map: map,
-			content: place.name + "<br>" + currentAddress
 		});
-
-		/// creates infowindows for each marker and pushes markers to array
 		
-
 		/// Opens infowindow on click
 		marker.addListener('click', function() {
-			map.setZoom(15);
 			map.setCenter(marker.position);
 			infowindow.setContent(marker.name + '<br>' + marker.address);
 			infowindow.open(map, marker);
