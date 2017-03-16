@@ -62,7 +62,7 @@ var places = [
 ];
 
 var map;
-var markers = [];
+var markers = [{}];
 
 function mapError() {
 	alert("Something went wrong. Please try again.");
@@ -72,7 +72,7 @@ function initMap() {
   var austin = {lat: 30.266568, lng: -97.743202};
   /// Sets map at Austin as the center
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 10,
+    zoom: 12,
     minZoom: 4,
     center: austin
   });
@@ -98,6 +98,9 @@ function initMap() {
     }
   };
 
+/// Global infowindow variable makes it so only one is open at a time 
+var infowindow = new google.maps.InfoWindow();
+
 function addMarker(place) {
 	/// FourSquare API only excepts lat and lng in the form of XX.XX
   var shortLat = place.lat.toFixed(2);
@@ -119,6 +122,7 @@ function addMarker(place) {
   			alert("There was an error retrieving data from FourSquare, please try again.");
   			return;
 			}
+
 		var marker = new google.maps.Marker({	
 			position: new google.maps.LatLng(place.lat, place.lng),
 			icon: icons[place.type].icon,
@@ -126,20 +130,19 @@ function addMarker(place) {
 			address: currentAddress,
 			animation: google.maps.Animation.DROP,
 			map: map,
-			content: place.name + "<br>" + currentAddress			
+			content: place.name + "<br>" + currentAddress
 		});
 
 		/// creates infowindows for each marker and pushes markers to array
-		var infoWindow = new google.maps.InfoWindow({
-			content: marker.content
-		});
-		marker.infoWindow = infoWindow;
-		markers.push(marker);
+		
 
 		/// Opens infowindow on click
 		marker.addListener('click', function() {
-			infoWindow.open(map, marker);
-		})
+			map.setZoom(15);
+			map.setCenter(marker.position);
+			infowindow.setContent(marker.name + '<br>' + marker.address);
+			infowindow.open(map, marker);
+		});
 
 		/// Marker Bounce
 		marker.addListener('click', function() {
