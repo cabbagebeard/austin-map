@@ -3,7 +3,7 @@ var places = [
 		lat: 30.269565, 
 		lng: -97.736383,
 		name: "Arlo's",
-		type: 'veg',
+		type: 'veg'
 	},
 	{
 		lat: 30.269693, 
@@ -78,6 +78,8 @@ function initMap() {
     center: austin
   });
 
+  ko.applyBindings(new ViewModel());
+
   /// Custom marker icons
   var iconFolder = 'img/markers/';
   var icons = {
@@ -150,9 +152,9 @@ function addMarker(place) {
 				    }, 700);
   			}
 		});		
-  });
+		markers.push(marker);
+  }); 
  }
-
   /// Adds the markers
 	for (var i = 0, place; place = places[i]; i++) {
 		addMarker(place);
@@ -181,7 +183,15 @@ var Place = function(data) {
 	this.lng = ko.observable(data.lng);
 	this.name = ko.observable(data.name);
 	this.type = ko.observable(data.type);
-};
+	setTimeout(function() {
+		markers.forEach(function(marker) {
+			if (data.name === marker.name) {
+				this.marker = marker;
+				this.marker.setVisible(true);
+			}
+		})
+	}, 500);
+};	
 
 function ViewModel() {
 	var self = this;
@@ -202,5 +212,3 @@ function ViewModel() {
     });
   }, self);
 }
-
-ko.applyBindings(new ViewModel());
