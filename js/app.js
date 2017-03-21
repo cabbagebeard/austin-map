@@ -3,61 +3,71 @@ var places = [
 		lat: 30.269565, 
 		lng: -97.736383,
 		name: "Arlo's",
-		type: 'veg'
+		type: 'veg',
+		marker: []
 	},
 	{
 		lat: 30.269693, 
 		lng: -97.736297,
 		name: "Cheer Up Charlies",
-		type: 'bar'
+		type: 'bar',
+		marker: []
 	},
 	{
 		lat: 30.683100, 
 		lng: -98.344213,
 		name: "Longhorn Cavern State Park",
-		type: 'activity'
+		type: 'activity',
+		marker: []
 	},
 	{
 		lat: 30.320741, 
 		lng: -97.773344,
 		name: "Mount Bonnell",
-		type: 'activity'
+		type: 'activity',
+		marker: []
 	},
 	{
 		lat: 30.218634, 
 		lng: -97.771560,
 		name: "Cathedral of Junk",
-		type: 'activity'
+		type: 'activity',
+		marker: []
 	},
 	{
 		lat: 30.266919, 
 		lng: -97.745178,
 		name: "Peche",
-		type: 'bar'
+		type: 'bar',
+		marker: []
 	},
 	{
 		lat: 30.265028, 
 		lng: -97.731564,
 		name: "Baton Creole",
-		type: 'veg'
+		type: 'veg',
+		marker: []
 	},
 	{
 		lat: 30.181238, 
 		lng: -97.722692,
 		name: "McKinney State Park",
-		type: 'campsite'
+		type: 'campsite',
+		marker: []
 	},
 	{
 		lat: 30.369964, 
 		lng: -97.721548,
 		name: "Pinballz Arcade",
-		type: 'activity'
+		type: 'activity',
+		marker: []
 	},
 	{
 		lat: 30.248428, 
 		lng: -97.750338,
 		name: "Uncommon Objects",
-		type: 'activity'
+		type: 'activity',
+		marker: []
 	},
 ];
 
@@ -132,8 +142,8 @@ function addMarker(place) {
 			address: currentAddress,
 			animation: google.maps.Animation.DROP,
 			map: map,
-		});
-		
+		});		
+
 		/// Opens infowindow on click
 		marker.addListener('click', function() {
 			map.setCenter(marker.position);
@@ -151,14 +161,17 @@ function addMarker(place) {
 				      marker.setAnimation(null);
 				    }, 700);
   			}
-		});		
+		});
+
 		markers.push(marker);
-  }); 
+		place.marker.push(marker);
+  }); 		
  }
   /// Adds the markers
 	for (var i = 0, place; place = places[i]; i++) {
 		addMarker(place);
 	}
+
 	/// Creates the Legend
 	var legend = document.getElementById('legend');
 	for (var key in icons) {
@@ -172,28 +185,16 @@ function addMarker(place) {
 	map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 }
 
-function clickedPlace(place) {
-	var latLng = new google.maps.LatLng(place.lat(), place.lng());
-	map.setZoom(16);
-	map.setCenter(latLng);
-}
-
 var Place = function(data) {
 	this.lat = ko.observable(data.lat);
 	this.lng = ko.observable(data.lng);
 	this.name = ko.observable(data.name);
 	this.type = ko.observable(data.type);
-	setTimeout(function() {
-		markers.forEach(function(marker) {
-			if (data.name === marker.name) {
-				this.marker = marker;
-				this.marker.setVisible(true);
-			}
-		})
-	}, 500);
+	this.marker = data.marker;
 };	
 
 function ViewModel() {
+
 	var self = this;
 
 	self.placesList = ko.observableArray([]);
@@ -211,4 +212,8 @@ function ViewModel() {
     	}
     });
   }, self);
+}
+
+function clickedPlace(place) {
+	google.maps.event.trigger(place.marker[0], 'click');
 }
