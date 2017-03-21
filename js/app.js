@@ -163,6 +163,14 @@ function addMarker(place) {
   			}
 		});
 
+		function visible(bool) {
+			if (bool === true) {
+				marker.setVisible(true);
+			} else {
+				marker.setVisible(false);
+			}
+		}
+
 		markers.push(marker);
 		place.marker.push(marker);
   }); 		
@@ -205,9 +213,12 @@ function ViewModel() {
 	});
 
 	/// Returns places that match user's input in search bar
+	/// Hides markers that don't fit search, shows markers that do
 	self.filteredPlaces = ko.computed(function() {
     return ko.utils.arrayFilter(self.placesList(), function(place) {
+    	setTimeout(function() {place.marker[0].setVisible(false)}, 100);
     	if (place.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
+    		setTimeout(function() {place.marker[0].setVisible(true)}, 100);
     		return place.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1;
     	}
     });
