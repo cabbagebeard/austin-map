@@ -214,11 +214,12 @@ function ViewModel() {
 
 	/// Returns places that match user's input in search bar
 	/// Hides markers that don't fit search, shows markers that do
+	/// setTimeout 
 	self.filteredPlaces = ko.computed(function() {
     return ko.utils.arrayFilter(self.placesList(), function(place) {
-    	setTimeout(function() {place.marker[0].setVisible(false);}, 300);
+    	place.marker[0] && place.marker[0].setVisible(false);
     	if (place.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
-    		setTimeout(function() {place.marker[0].setVisible(true);}, 300);
+    		place.marker[0] && place.marker[0].setVisible(true);
     		return place.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1;
     	}
     });
