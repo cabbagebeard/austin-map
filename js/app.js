@@ -194,10 +194,10 @@ function addMarker(place) {
 }
 
 var Place = function(data) {
-	this.lat = ko.observable(data.lat);
-	this.lng = ko.observable(data.lng);
-	this.name = ko.observable(data.name);
-	this.type = ko.observable(data.type);
+	this.lat = data.lat;
+	this.lng = data.lng;
+	this.name = data.name;
+	this.type = data.type;
 	this.marker = data.marker;
 };	
 
@@ -216,10 +216,10 @@ function ViewModel() {
 	/// Hides markers that don't fit search, shows markers that do
 	self.filteredPlaces = ko.computed(function() {
     return ko.utils.arrayFilter(self.placesList(), function(place) {
-    	setTimeout(function() {place.marker[0].setVisible(false)}, 100);
-    	if (place.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
-    		setTimeout(function() {place.marker[0].setVisible(true)}, 100);
-    		return place.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1;
+    	setTimeout(function() {place.marker[0].setVisible(false);}, 300);
+    	if (place.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
+    		setTimeout(function() {place.marker[0].setVisible(true);}, 300);
+    		return place.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1;
     	}
     });
   }, self);
