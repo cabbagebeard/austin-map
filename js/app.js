@@ -95,8 +95,7 @@ var map;
 var markers = [];
 
 function mapError() {
-	alert("Something went wrong. Please try again.");
-	return;
+	alert("Something went wrong loading the map. Please try again.");
 }
 
 function initMap() {
@@ -110,7 +109,6 @@ function initMap() {
 
   ko.applyBindings(new ViewModel());
 
-
 /// Global infowindow variable makes it so only one is open at a time 
 var infowindow = new google.maps.InfoWindow();
 
@@ -118,6 +116,7 @@ function addMarker(place) {
 	/// FourSquare API only excepts lat and lng in the form of XX.XX
   var shortLat = place.lat.toFixed(2);
 	var shortLng = place.lng.toFixed(2);
+	var currentAddress;
 
 	var FourSquareURL = "https://api.foursquare.com/v2/venues/search" + 
 		"?client_id=USVBGCVLFISWBVO0F13GELJFCDCWBE0HJUQ3JPYTWYX2TMET" +
@@ -125,16 +124,13 @@ function addMarker(place) {
 		"&v=20130815" + 
 		"&ll="+ shortLat + "," + shortLng +
 		"&query=" + place.name;
-
+	
 	/// Data Retrieval from FourSquare
 	$.getJSON(FourSquareURL, function(FourSquareData) {
-  		if (FourSquareData.response.venues) {
-  			var currentPlace = FourSquareData.response.venues[0];
-  			var currentAddress = currentPlace.location.address;	
-  		}	else {
-  			alert("There was an error retrieving data from FourSquare, please try again.");
-  			return;
-			}
+		if (FourSquareData.response.venues) {
+			var currentPlace = FourSquareData.response.venues[0];
+			var currentAddress = currentPlace.location.address;
+		};
 
 		var marker = new google.maps.Marker({	
 			position: new google.maps.LatLng(place.lat, place.lng),
@@ -163,24 +159,17 @@ function addMarker(place) {
 				    }, 700);
   			}
 		});
-
-		function visible(bool) {
-			if (bool === true) {
-				marker.setVisible(true);
-			} else {
-				marker.setVisible(false);
-			}
-		}
-
 		markers.push(marker);
-		place.marker.push(marker);
-  }); 		
- }
-  /// Adds the markers
-	for (var i = 0, place; place = places[i]; i++) {
-		addMarker(place);
+		place.marker.push(marker);	
+	}).fail(function(jqXHR, status, error) {
+		alert("Something went wrong loading the markers. Please try again.");
+	});
+};
+/// Adds the markers
+for (var i = 0, place; place = places[i]; i++) {
+	addMarker(place);
 	}
-}
+};
 
 var Place = function(data) {
 	this.lat = data.lat;
@@ -191,7 +180,6 @@ var Place = function(data) {
 };	
 
 function ViewModel() {
-
 	var self = this;
 
 	self.placesList = ko.observableArray([]);
