@@ -70,6 +70,26 @@ var places = [
 		marker: []
 	},
 ];
+/// Custom marker icons
+var iconFolder = 'img/markers/';
+var icons = {
+  veg: {
+    name: 'Veg Restaurant',
+    icon: iconFolder + 'darkgreen_MarkerV.png'
+  },
+  bar: {
+    name: 'Bar/Brewery',
+    icon: iconFolder + 'yellow_MarkerB.png'
+  },
+  activity: {
+    name: 'Activity',
+    icon: iconFolder + 'paleblue_MarkerA.png'
+  },
+  campsite: {
+    name: 'Campsite',
+    icon: iconFolder + 'brown_MarkerC.png'
+  }
+};
 
 var map;
 var markers = [];
@@ -90,26 +110,7 @@ function initMap() {
 
   ko.applyBindings(new ViewModel());
 
-  /// Custom marker icons
-  var iconFolder = 'img/markers/';
-  var icons = {
-    veg: {
-      name: 'Veg Restaurant',
-      icon: iconFolder + 'darkgreen_MarkerV.png'
-    },
-    bar: {
-      name: 'Bar/Brewery',
-      icon: iconFolder + 'yellow_MarkerB.png'
-    },
-    activity: {
-      name: 'Activity',
-      icon: iconFolder + 'paleblue_MarkerA.png'
-    },
-    campsite: {
-      name: 'Campsite',
-      icon: iconFolder + 'brown_MarkerC.png'
-    }
-  };
+
 /// Global infowindow variable makes it so only one is open at a time 
 var infowindow = new google.maps.InfoWindow();
 
@@ -179,18 +180,6 @@ function addMarker(place) {
 	for (var i = 0, place; place = places[i]; i++) {
 		addMarker(place);
 	}
-
-	/// Creates the Legend
-	var legend = document.getElementById('legend');
-	for (var key in icons) {
-		var type = icons[key];
-		var name = type.name;
-		var icon = type.icon;
-		var div = document.createElement('div');
-		div.innerHTML = '<img src="' + icon + '">' + name;
-		legend.appendChild(div);
-	}
-	map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 }
 
 var Place = function(data) {
@@ -214,7 +203,6 @@ function ViewModel() {
 
 	/// Returns places that match user's input in search bar
 	/// Hides markers that don't fit search, shows markers that do
-	/// setTimeout 
 	self.filteredPlaces = ko.computed(function() {
     return ko.utils.arrayFilter(self.placesList(), function(place) {
     	place.marker[0] && place.marker[0].setVisible(false);
